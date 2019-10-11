@@ -49,6 +49,11 @@ class Game:
         column = self.getMove()
         self.addPlayerMove(column)
         
+    #returns an enum from Result based on board state
+    #TODO
+    def EvaluateBoard():
+        pass
+        
     #checks to see if board is filled
     #returns true if all spaces filled
     def IsBoardFilled(self):
