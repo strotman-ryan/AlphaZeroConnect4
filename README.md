@@ -1,2 +1,2 @@
 # AlphaZeroConnect4
-Create a Connect 4 AI using ideas from Goolge's Deep Mind Team
+Create a Connect 4 AI using ideas from Google's Deep Mind Team

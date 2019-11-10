@@ -2,6 +2,7 @@
 #an instance of this class controls one game
 
 import numpy as np
+from Result import Result
 
 class Game:
     
@@ -49,15 +50,82 @@ class Game:
         column = self.getMove()
         self.addPlayerMove(column)
         
-    #returns an enum from Result based on board state
-    #TODO
-    def EvaluateBoard():
-        pass
-        
+	
     #checks to see if board is filled
     #returns true if all spaces filled
     def IsBoardFilled(self):
-        return self.rows * self.columns == np.count_nonzero(self.board)
+        return 42 == np.count_nonzero(self.board)
+        #return self.rows * self.columns == np.count_nonzero(self.board)
+	
+    #returns an enum from Result based on board state
+    #TODO
+    def EvaluateBoard(self):
+        result = Result.NotFinished;
+        #Check Vertical 
+        for column in range(7):
+            if result != Result.NotFinished:
+                break
+            for row in range(3):
+                if result != Result.NotFinished:
+                    break
+                if self.board[row, column] != 0:
+                    if self.board[row, column] == self.board[row+1, column] and self.board[row, column] == self.board[row+2, column] and self.board[row, column] == self.board[row+3, column]:
+                        if self.board[row, column] == 1:
+                            result = Result.Player1Win
+                        else:
+                            result = Result.Player2Win
+                            
+        #Check Horizontal
+        if result == Result.NotFinished:
+            for row in range(6):
+                if result != Result.NotFinished:
+                    break
+                for column in range(4):
+                    if result != Result.NotFinished:
+                        break
+                    if self.board[row, column] != 0:
+                        if self.board[row, column] == self.board[row, column+1] and self.board[row, column] == self.board[row, column+2] and self.board[row, column] == self.board[row, column+3]:
+                            if self.board[row, column] == 1:
+                                result = Result.Player1Win
+                            else:
+                                result = Result.Player2Win
+                        
+        #Check Diagonal going up right
+        if result == Result.NotFinished:
+            for row in range(3):
+                if result != Result.NotFinished:
+                    break
+                for column in range(4):
+                    if result != Result.NotFinished:
+                        break
+                    if self.board[row, column] != 0:
+                        if self.board[row, column] == self.board[row+1, column+1] and self.board[row, column] == self.board[row+2, column+2] and self.board[row, column] == self.board[row+3, column+3]:
+                            if self.board[row, column] == 1:
+                                result = Result.Player1Win
+                            else:
+                                result = Result.Player2Win
+        
+        #Check Diagonal going down right
+        if result == Result.NotFinished:
+            for row in range(3,6):
+                if result != Result.NotFinished:
+                    break
+                for column in range(4):
+                    if result != Result.NotFinished:
+                        break
+                    if self.board[row, column] != 0:
+                        if self.board[row, column] == self.board[row-1, column+1] and self.board[row, column] == self.board[row-2, column+2] and self.board[row, column] == self.board[row-3, column+3]:
+                            if self.board[row, column] == 1:
+                                result = Result.Player1Win
+                            else:
+                                result = Result.Player2Win        
+
+        #Check Stalemate
+        if result == Result.NotFinished and self.IsBoardFilled():
+            result = Result.Tie
+        
+        return result
+        
     
     #returns true if <player> won
     def PlayerWin(self,player):
