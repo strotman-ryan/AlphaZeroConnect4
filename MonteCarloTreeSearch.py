@@ -70,8 +70,18 @@ class MonteCarloTreeSearch:
 			reward = 1 - reward #invert reward due to opposing players taking turns
 	
 	#UCT - Upper Confidence Trees
-	#selects a child, 
+	#selects a child, attempting to balance exploring new moves and 
 	def uct_select(self, node):
+		log_visits_vertex = math.log(self.visit_counts[node])
+		
+		#upper confidence bound for trees formula
+		def uct(n):
+			return ( self.rewards[n]/self.visit_counts[n] + 
+				self.exploration_weight * 
+				math.sqrt(log_visits_vertex/self.visit_counts[n])
+			)
+		
+		return max(self.children[node], key=uct)
 
 class TreeNode():
 	def __init__(self, game, move, parent=None):
